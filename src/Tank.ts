@@ -11,10 +11,10 @@ export class Tank {
     private _moveEngine: MoveEngine;
 
     constructor(isPlayer: boolean = false) {
-        this._image = (document.getElementById('tank-1').cloneNode(true) as HTMLDivElement);
+        this._image = (document.getElementById('tank-2').cloneNode(true) as HTMLDivElement);
         
         if (isPlayer) {
-            this._image.style.backgroundColor="aquamarine";
+            this._image = (document.getElementById('tank-1').cloneNode(true) as HTMLDivElement);
         }
 
         // this._image.style.
