@@ -1,0 +1,14 @@
+
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#game-container {
+    background-color: aqua;
+    height: 600px;
+    width: 600px;
+    border-radius: 5px;
+    position: relative;
+}
