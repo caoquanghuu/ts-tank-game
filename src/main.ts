@@ -1,5 +1,5 @@
 import { Tank } from "./Tank";
-
+import { getRandomArbitrary } from "./util";
 const FPS = 60;
 
 class Game {
@@ -15,13 +15,16 @@ class Game {
         // khoi tao doi tuong
         this._player = new Tank(true);
 
-        const ene1 = new Tank();
-        ene1.setPosition({ x: 0, y: 100});
+        this.spawnEnemy();
 
-        this._enemies.push(ene1);
+        // const ene1 = new Tank();
+        // ene1.setPosition({ x: 0, y: 100});
 
-        this._tanks.push(...this._enemies);
+        // this._enemies.push(ene1);
+        
+        // this._tanks.push(...this._enemies);
         this._tanks.push(this._player);
+        console.log(this._enemies);
     }
 
     update(deltaTime: number) {
@@ -31,6 +34,16 @@ class Game {
         // console.log(deltaTime)
         this._tanks.forEach(tank => tank.update(deltaTime));
     }
+
+    private spawnEnemy() {
+        const newEne = new Tank();
+        newEne.setPosition({x: getRandomArbitrary(1,499) , y: getRandomArbitrary(1, 499)});
+        
+        this._enemies.push(newEne);
+        this._tanks.push(...this._enemies);
+        setTimeout(() => {this.spawnEnemy();},10000);
+    }
+
 }
 
 
