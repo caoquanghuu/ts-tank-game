@@ -1,5 +1,5 @@
 import { Point } from "./types";
-
+import { getRandomArbitrary } from "./util";
 
 export class MoveEngine {
 
@@ -36,8 +36,8 @@ export class MoveEngine {
     }
 
     private randomMove() {
-        this._moveDirection.x = Math.round(Math.random());
-        this._moveDirection.y = Math.round(Math.random());
+       this._moveDirection.x = Math.round(getRandomArbitrary(-1 , 1));
+       this._moveDirection.y = Math.round(getRandomArbitrary(-1 , 1));
     }
 
     private onKeyDown(event: any) {
