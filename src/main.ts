@@ -15,7 +15,7 @@ class Game {
         // khoi tao doi tuong
         this._player = new Tank(true);
 
-        this.spawnEnemy();
+        // this.spawnEnemy();
 
         const ene1 = new Tank();
         ene1.setPosition({ x: 0, y: 100});

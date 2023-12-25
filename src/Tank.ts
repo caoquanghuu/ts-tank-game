@@ -34,8 +34,7 @@ export class Tank {
 
     private _move(deltaTime: number) {
         const direction = this._moveEngine.getDirection();
-        console.log(direction);
-        this.rotateDirection(direction);
+        
         const nextY = Number.parseInt(this._image.style.top) + this._speed * deltaTime / 1000 * direction.y;
         const nextX = Number.parseInt(this._image.style.left) + this._speed * deltaTime / 1000 * direction.x;
 
@@ -46,7 +45,7 @@ export class Tank {
         if (nextY >= 500) return;
 
         this.setPosition({ x: nextX, y: nextY});
-        
+        this.rotateDirection(direction);
     }
 
     public setPosition(position: Point) {
