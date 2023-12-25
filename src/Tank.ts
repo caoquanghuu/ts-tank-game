@@ -1,5 +1,6 @@
 import { MoveEngine } from "./MoveEngine";
 import { Point } from "./types";
+import { Bullet } from "./bullet";
 
 
 
@@ -9,6 +10,8 @@ export class Tank {
     private _speed: number = 100; // ox / s
 
     private _moveEngine: MoveEngine;
+
+    private _bullet: Bullet;
 
     constructor(isPlayer: boolean = false) {
         this._image = (document.getElementById('tank-2').cloneNode(true) as HTMLDivElement);
@@ -20,13 +23,14 @@ export class Tank {
         document.getElementById('game-container').appendChild(this._image)
 
         this._moveEngine = new MoveEngine(isPlayer);
+        this._bullet = new Bullet;
     }
 
     public update(deltaTime: number) {
         // di chuyen
         this._moveEngine.update(deltaTime);
         this._move(deltaTime);
-
+        this._bullet.update(deltaTime);
         // Update HP
 
         // 
