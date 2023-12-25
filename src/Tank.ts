@@ -16,8 +16,7 @@ export class Tank {
         if (isPlayer) {
             this._image = (document.getElementById('tank-1').cloneNode(true) as HTMLDivElement);
         }
-
-        // this._image.style.
+      
         document.getElementById('game-container').appendChild(this._image)
 
         this._moveEngine = new MoveEngine(isPlayer);
@@ -35,7 +34,8 @@ export class Tank {
 
     private _move(deltaTime: number) {
         const direction = this._moveEngine.getDirection();
-
+        console.log(direction);
+        this.rotateDirection(direction);
         const nextY = Number.parseInt(this._image.style.top) + this._speed * deltaTime / 1000 * direction.y;
         const nextX = Number.parseInt(this._image.style.left) + this._speed * deltaTime / 1000 * direction.x;
 
@@ -46,11 +46,23 @@ export class Tank {
         if (nextY >= 500) return;
 
         this.setPosition({ x: nextX, y: nextY});
+        
     }
 
     public setPosition(position: Point) {
         
         this._image.style.top = `${position.y}px`;
         this._image.style.left = `${position.x}px`;
+    }
+
+    public rotateDirection(point : Point) {
+        if (point.y === -1) {this._image.style.transform = 'rotate(0deg)'};
+        if (point.y === 1) {this._image.style.transform = 'rotate(180deg)'};
+        if (point.x === -1) {this._image.style.transform = 'rotate(270deg)'};
+        if (point.x === 1) {this._image.style.transform = 'rotate(90deg)'};
+        if ((point.y === -1) && (point.x === -1)) {this._image.style.transform = 'rotate(-45deg)'};
+        if ((point.y === -1) && (point.x === 1)) {this._image.style.transform = 'rotate(45deg)'};
+        if ((point.y === 1) && (point.x === -1))  {this._image.style.transform = 'rotate(225deg)'};
+        if ((point.y === 1) && (point.x === 1)) {this._image.style.transform = 'rotate(135deg)'};
     }
 }
