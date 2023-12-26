@@ -13,16 +13,17 @@ export class Tank {
 
     private _bullet: Bullet;
 
-    constructor(isPlayer: boolean = false) {
-        this._image = (document.getElementById('tank-2').cloneNode(true) as HTMLDivElement);
-        
+    constructor(isPlayer: boolean = false) {  
         if (isPlayer) {
             this._image = (document.getElementById('tank-1').cloneNode(true) as HTMLDivElement);
+            this._moveEngine = new MoveEngine(isPlayer);
+        } else {
+            this._image = (document.getElementById('tank-2').cloneNode(true) as HTMLDivElement);
+            this._moveEngine = new MoveEngine();
         }
-      
+        
         document.getElementById('game-container').appendChild(this._image)
 
-        this._moveEngine = new MoveEngine(isPlayer);
         this._bullet = new Bullet;
     }
 

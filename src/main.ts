@@ -18,14 +18,14 @@ export class Game {
         // khoi tao doi tuong
         this._player = new Tank(true);
 
-        // this.spawnEnemy();
+        this.spawnEnemy();
 
-        const ene1 = new Tank();
-        ene1.setPosition({ x: 0, y: 100});
+        // const ene1 = new Tank();
+        // ene1.setPosition({ x: 0, y: 100});
 
-        this._enemies.push(ene1);
+        // this._enemies.push(ene1);
         
-        this._tanks.push(...this._enemies);
+        // this._tanks.push(...this._enemies);
         this._tanks.push(this._player);
     }
 
@@ -42,7 +42,7 @@ export class Game {
         newEne.setPosition({x: getRandomArbitrary(1,499) , y: getRandomArbitrary(1, 499)});
         
         this._enemies.push(newEne);
-        this._tanks.push(...this._enemies);
+        this._tanks.push(newEne);
 
         setTimeout(() => {this.spawnEnemy();},10000);
     }
