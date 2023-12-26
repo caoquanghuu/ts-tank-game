@@ -3,29 +3,32 @@ import { getRandomArbitrary } from "./util";
 
 export class MoveEngine {
 
-    private _isInput: boolean = false;
+    private _isRandomMove: boolean = false;
     private _moveDirection: Point = { x: 0, y: 0 };
 
     private _directionChangeTime = 1000;
 
-    constructor(isInput: boolean = false) {
-        if (isInput) {
+    constructor(isUseInput: boolean = false, randomMove: boolean = false) {
+        if (isUseInput) {
             // Player control
-
             document.addEventListener('keydown',this.onKeyDown.bind(this))
             document.addEventListener('keyup',this.onKeyUp.bind(this))
         } else {
             // random control
         }
-        this._isInput = isInput;
+        this._isRandomMove = randomMove;
     }
 
     public getDirection(): Point {
         return this._moveDirection;
     }
 
+    public setDirection(direction: Point) {
+        this._moveDirection = direction;
+    }
+
     public update(dt: number) {
-        if (this._isInput) return;
+        if (this._isRandomMove) {
 
         this._directionChangeTime -= dt;
         if (this._directionChangeTime <= 0) {
@@ -34,6 +37,7 @@ export class MoveEngine {
             this.randomMove();
         }
     }
+}
 
     private randomMove() {
        this._moveDirection.x = Math.round(getRandomArbitrary(-1 , 1));

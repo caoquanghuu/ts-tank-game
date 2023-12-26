@@ -1,38 +1,34 @@
-// import { MoveEngine } from "./MoveEngine";
+import { MoveEngine } from "./MoveEngine";
 import { Point } from "./types";
 import { getRandomArbitrary } from "./util";
 
 export class MoveAbleObject {
     public _image: HTMLDivElement;
-
-    public _isInput: boolean = false;
-
     public _speed: number = 100;
-
     public _position: Point;
+    protected _moveEngine: MoveEngine;
 
-    public _moveDirection: Point;
-
-    private _directionChangeTime = 1000;
-
-    constructor(isInput: boolean = false) {
-                if (isInput) {
-                    // Player control
-        
-                    document.addEventListener('keydown',this.onKeyDown.bind(this))
-                    document.addEventListener('keyup',this.onKeyUp.bind(this))
-                } else {
-                    // random control
-                }
-                this._isInput = isInput;
-            }
-
-    public getDirection(): Point {
-        return this._moveDirection;
+    constructor(id: string) {
+        // id -> _image
+        this._image = (document.getElementById(id).cloneNode(true) as HTMLDivElement);
+        document.getElementById('game-container').appendChild(this._image)
+        this._image.style.position = 'absolute'
     }
 
     public _move(deltaTime: number) {
-        const direction = this.getDirection();
+
+        if (!this._moveEngine) {
+            return;
+        }
+
+        const direction = this._moveEngine.getDirection();
+
+        if (direction.x ===0 && direction.y ===0 ) {
+            // da di
+            return;
+        } else {
+            
+        }
     
         const nextY = Number.parseInt(this._image.style.top) + this._speed * deltaTime / 1000 * direction.y;
         const nextX = Number.parseInt(this._image.style.left) + this._speed * deltaTime / 1000 * direction.x;
@@ -48,7 +44,7 @@ export class MoveAbleObject {
     }
 
     public setPosition(position: Point) {
-        
+        this._position = position;
         this._image.style.top = `${position.y}px`;
         this._image.style.left = `${position.x}px`;
     }
@@ -64,69 +60,7 @@ export class MoveAbleObject {
         if ((point.y === 1) && (point.x === 1)) {this._image.style.transform = 'rotate(135deg)'};
     }
 
-    public randomMove() {
-        this._moveDirection.x = Math.round(getRandomArbitrary(-1 , 1));
-        this._moveDirection.y = Math.round(getRandomArbitrary(-1 , 1));
-    }
-
-    public onKeyDown(event: any) {
-        switch (event.keyCode ) {
-            case 38:
-                // up
-                this._moveDirection.y = -1;
-                break;
-            case 40:
-                // down
-                this._moveDirection.y = 1;
-                break;
-            case 37:
-                // up
-                this._moveDirection.x = -1;
-                break;
-            case 39:
-                // right
-                this._moveDirection.x = 1;
-                break;
-        
-            default:
-                break;
-        }
-    }
-
-    public onKeyUp(event: any) {
-        switch (event.keyCode) {
-            case 38:
-                // up
-                this._moveDirection.y = 0;
-                break;
-            case 40:
-                // down
-                this._moveDirection.y = 0;
-                break;
-            case 37:
-                // up
-                this._moveDirection.x = 0;
-                break;
-            case 39:
-                // right
-                this._moveDirection.x = 0;
-                break;
-        
-            default:
-                break;
-        }
-    }
-
-   
-
     public update(dt: number) {
-                if (this._isInput) return;
-        
-                this._directionChangeTime -= dt;
-                if (this._directionChangeTime <= 0) {
-                    this._directionChangeTime = 1000;
-        
-                    this.randomMove();
-                }
-            }
+        this._move(dt);
+    }
 }

@@ -38,9 +38,8 @@ export class Game {
         this._enemies.push(newEne);
         this._tanks.push(newEne);
 
-        setTimeout(() => {this.spawnEnemy();},10000);
+        setTimeout(() => {this.spawnEnemy();},30000);
     }
-
 }
 
 
