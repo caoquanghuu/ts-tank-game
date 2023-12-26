@@ -1,72 +1,50 @@
-import { MoveEngine } from "./MoveEngine";
+// import { MoveEngine } from "./MoveEngine";
 import { Point } from "./types";
-import { Bullet } from "./bullet";
+// import { Bullet } from "./bullet";
+import { MoveAbleObject } from "./MoveAbleObject";
 
 
 
-export class Tank {
-    private _image: HTMLDivElement;
+export class Tank extends MoveAbleObject {
 
-    private _speed: number = 100; // ox / s
-
-    private _moveEngine: MoveEngine;
-
-    private _bullet: Bullet;
+    public _moveAbleObject : MoveAbleObject;
+    
+    // private _bullet : Bullet;
 
     constructor(isPlayer: boolean = false) {  
+        super()
         if (isPlayer) {
             this._image = (document.getElementById('tank-1').cloneNode(true) as HTMLDivElement);
-            this._moveEngine = new MoveEngine(isPlayer);
+        //     document.addEventListener('keydown',this.onKeyDown.bind(this))
+        //     document.addEventListener('keyup',this.onKeyUp.bind(this))
+            this._moveAbleObject = new MoveAbleObject(true);
+        //     // this._bullet = new Bullet(true);
         } else {
             this._image = (document.getElementById('tank-2').cloneNode(true) as HTMLDivElement);
-            this._moveEngine = new MoveEngine();
+            this._moveAbleObject = new MoveAbleObject();
+        //     // this._bullet = new Bullet(false);
         }
         
-        document.getElementById('game-container').appendChild(this._image)
-
-        this._bullet = new Bullet;
+        document.getElementById('game-container').appendChild(this._image);
     }
 
     public update(deltaTime: number) {
         // di chuyen
-        this._moveEngine.update(deltaTime);
-        this._move(deltaTime);
-        this._bullet.update(deltaTime);
+        this._moveAbleObject.update(deltaTime);
+        super._move(deltaTime);
+        // this._bullet.update(deltaTime);
         // Update HP
 
         // 
     }
 
-    private _move(deltaTime: number) {
-        const direction = this._moveEngine.getDirection();
-        
-        const nextY = Number.parseInt(this._image.style.top) + this._speed * deltaTime / 1000 * direction.y;
-        const nextX = Number.parseInt(this._image.style.left) + this._speed * deltaTime / 1000 * direction.x;
+    // public _getTankDirection() {
+    //     return this._moveEngine.getDirection();
+    // }
 
-        if (nextX < 0) return;
-        if (nextY < 0) return;
-
-        if (nextX >= 500) return;
-        if (nextY >= 500) return;
-
-        this.setPosition({ x: nextX, y: nextY});
-        this.rotateDirection(direction);
-    }
-
-    public setPosition(position: Point) {
-        
-        this._image.style.top = `${position.y}px`;
-        this._image.style.left = `${position.x}px`;
-    }
-
-    public rotateDirection(point : Point) {
-        if (point.y === -1) {this._image.style.transform = 'rotate(0deg)'};
-        if (point.y === 1) {this._image.style.transform = 'rotate(180deg)'};
-        if (point.x === -1) {this._image.style.transform = 'rotate(270deg)'};
-        if (point.x === 1) {this._image.style.transform = 'rotate(90deg)'};
-        if ((point.y === -1) && (point.x === -1)) {this._image.style.transform = 'rotate(-45deg)'};
-        if ((point.y === -1) && (point.x === 1)) {this._image.style.transform = 'rotate(45deg)'};
-        if ((point.y === 1) && (point.x === -1))  {this._image.style.transform = 'rotate(225deg)'};
-        if ((point.y === 1) && (point.x === 1)) {this._image.style.transform = 'rotate(135deg)'};
-    }
+    // public _getTankPosition () {
+    //     this._tankPosition.y = Number.parseInt(this._image.style.top);
+    //     this._tankPosition.x = Number.parseInt(this._image.style.left);
+    //     return this._tankPosition;
+    // }
 }

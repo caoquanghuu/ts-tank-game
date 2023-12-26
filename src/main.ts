@@ -1,5 +1,5 @@
 import { Tank } from "./Tank";
-import { Bullet } from "./bullet";
+// import { Bullet } from "./bullet";
 import { getRandomArbitrary } from "./util";
 const FPS = 60;
 
@@ -7,9 +7,9 @@ export class Game {
     private _tanks: Tank[] = []
 
     public _player: Tank;
-    private _playerTankBullet: Bullet[];
+    // private _playerTankBullet: Bullet[];
     private _enemies: Tank[] = [];
-    private _enemiesTankBullet: Bullet[];
+    // private _enemiesTankBullet: Bullet[];
 
     constructor() {
         // Khoi tao update
@@ -20,12 +20,6 @@ export class Game {
 
         this.spawnEnemy();
 
-        // const ene1 = new Tank();
-        // ene1.setPosition({ x: 0, y: 100});
-
-        // this._enemies.push(ene1);
-        
-        // this._tanks.push(...this._enemies);
         this._tanks.push(this._player);
     }
 

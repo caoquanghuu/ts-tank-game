@@ -12,3 +12,8 @@ body {
     border-radius: 5px;
     position: relative;
 }
+
+#bullet {
+    height: 50px;
+    width: 50px;
+}
