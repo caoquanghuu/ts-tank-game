@@ -3,7 +3,6 @@ type Point = {
     y: number
 }
 
-
 export {
     Point
 }

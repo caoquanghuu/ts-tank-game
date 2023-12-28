@@ -1,11 +1,9 @@
 import { Point } from "./types";
 import { getRandomArbitrary } from "./util";
-
 export class MoveEngine {
 
     private _isRandomMove: boolean = false;
     private _moveDirection: Point = { x: 0, y: 0 };
-
     private _directionChangeTime = 1000;
 
     constructor(isUseInput: boolean = false, randomMove: boolean = false) {
@@ -24,7 +22,8 @@ export class MoveEngine {
     }
 
     public setDirection(direction: Point) {
-        this._moveDirection = direction;
+        this._moveDirection.x = direction.x;
+        this._moveDirection.y = direction.y;
     }
 
     public update(dt: number) {
