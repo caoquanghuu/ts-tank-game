@@ -27,49 +27,51 @@ export class Bullet extends MoveAbleObject {
         this._moveEngine.setDirection(direction);
     }
 
-    public setBulletPosition(position: Point, direction : Point) {
-          this._position = position; 
+    private setBulletPosition(position: Point, direction : Point) {
 
-            if (direction.x === 0 && direction.y === 1)
+          if (direction.x === 0 && direction.y === 1)
             {
-                this._image.style.left  = `${position.x + 25}px`;
-                this._image.style.top= `${position.y + 75}px`;
+                this._position.x  = position.x + 25;
+                this._position.y= position.y + 75;
             };
             if (direction.x === 0 && direction.y === -1)
             {
-                this._image.style.left  = `${position.x + 25}px`;
-                this._image.style.top= `${position.y -25}px`;
+                this._position.x  = position.x + 25;
+                this._position.y= position.y - 25;
             };
             if (direction.x === 1 && direction.y === 0)
             {
-                this._image.style.left  = `${position.x + 75}px`;
-                this._image.style.top= `${position.y + 25}px`;
+                this._position.x  = position.x + 75;
+                this._position.y= position.y + 25;
             }
             if (direction.x === -1 && direction.y === 0)
             {
-                this._image.style.left  = `${position.x - 25}px`;
-                this._image.style.top= `${position.y + 25}px`;
+                this._position.x  = position.x - 25;
+                this._position.y= position.y + 25;
             }
             if (direction.x === -1 && direction.y === -1)
             {
-                this._image.style.left  = `${position.x - 15}px`;
-                this._image.style.top= `${position.y - 15}px`;
+                this._position.x  = position.x - 15;
+                this._position.y= position.y - 15;
             }
             if (direction.x === 1 && direction.y === 1)
             {
-                this._image.style.left  = `${position.x + 65}px`;
-                this._image.style.top= `${position.y + 65}px`;
+                this._position.x  = position.x + 65;
+                this._position.y= position.y + 65;
             }
             if (direction.x === 1 && direction.y === -1)
             {
-                this._image.style.left  = `${position.x +65}px`;
-                this._image.style.top= `${position.y - 15}px`;
+                this._position.x  = position.x + 65;
+                this._position.y= position.y - 15;
             }
             if (direction.x === -1 && direction.y === 1)
             {
-                this._image.style.left  = `${position.x - 15}px`;
-                this._image.style.top= `${position.y + 65}px`;
+                this._position.x  = position.x - 15;
+                this._position.y= position.y + 65;
             }
+
+            this._image.style.left = `${this._position.x}px`;
+            this._image.style.top = `${this._position.y}px`;
     }
 
 
