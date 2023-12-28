@@ -42,7 +42,9 @@ export class Game {
             const isCollision =  bullets.some(bullet => this.ktraVaCham(bullet, tank));
             if (isCollision) {
                 // tank.die();
-                console.log('co va cham')
+                console.log('co va cham');
+                this.tankDie(tank);
+                
             }
         });
     }
@@ -50,30 +52,44 @@ export class Game {
     ktraVaCham(bullet: Bullet, tank: Tank ) {
         const pos1 = tank._position;
         const pos2 = bullet._position;
+        bullet;
+        tank;
 
         // dan ko hien tren man hinh.
         if (!bullet.visible) {
             return false;
         }
 
-        // bullet & tank deu la bot
-        if (tank.isPlayerTank && tank._bullet.isPlayerBullet === false) {
+        // bullet & tank deu la bot 
+        if (tank.isPlayerTank === false && bullet.isPlayerBullet === false) {
             return false;
         }
 
         // bullet & tank deu la player
-        if (tank.isPlayerTank  && tank._bullet.isPlayerBullet === true) {
+        if (tank.isPlayerTank === true && bullet.isPlayerBullet === true) {
             return false;
         }
-
-
+       
         const r = 50;
         const distance = Math.sqrt(Math.pow((pos1.x - pos2.x), 2) + Math.pow((pos1.y - pos2.y), 2))
         // console.log(distance);
         if (distance <= r) {
+            bullet.removeBullet();
             return true;
         }
         return false;
+    }
+
+    private tankDie(tankDie : Tank) {
+       const a = this._tanks.findIndex(tank => tank === tankDie);
+       this._tanks.splice(a, 1);
+       const b = this._enemies.findIndex(tank => tank === tankDie);
+       this._enemies.splice(b, 1);
+
+       tankDie._image.style.display = 'none';
+       tankDie._bullet._image.style.display = 'none';
+       tankDie.tankStatus = false;
+       
     }
 
     private spawnEnemy() {
