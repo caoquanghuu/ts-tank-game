@@ -22,10 +22,8 @@ export class Tank extends MoveAbleObject {
         } else {
             this._moveEngine = new MoveEngine(false, true);
             this._bullet = new Bullet(false);
-           
-                this.startFireBullet();
 
-            // setInterval(() => {this.fireBullet()},getRandomArbitrary(5000,10000))
+            setInterval(() => {this.fireBullet()},getRandomArbitrary(5000,10000));
         }
         this._bullet.visible = false;
     }
@@ -41,17 +39,11 @@ export class Tank extends MoveAbleObject {
         }
     }
 
-    public startFireBullet() {
-        if (this.tankStatus) {
-            setInterval(() => {this.fireBullet()},2000);
-        }
-        
-    }
-
     private fireBullet() {
         // const direction = this.getLastDirection();
-        const direction = this.lastDirection;
-        this._bullet.triggerFire(this._position, {x: direction.x, y: direction.y})
+        if (this.tankStatus) {const direction = this.lastDirection;
+            this._bullet.triggerFire(this._position, {x: direction.x, y: direction.y})}
+        
     }
     
     public update(deltaTime: number) {
@@ -60,9 +52,7 @@ export class Tank extends MoveAbleObject {
         this._move(deltaTime);
         this._bullet.update(deltaTime);
         this.tankStatus;
-        
         // Update HP
     }
-
 
 }

@@ -91,6 +91,14 @@ export class MoveAbleObject {
         };
     }
 
+    set visible(visible: boolean) {
+        this._image.style.display = visible ? 'inherit' : 'none';
+    }
+
+    get visible() {
+        return this._image.style.display !== 'none'
+    }
+
     public update(dt: number) {
         this._move(dt);
     }

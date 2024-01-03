@@ -13,14 +13,6 @@ export class Bullet extends MoveAbleObject {
         this.isPlayerBullet = isPlayer;
     }
 
-    set visible(visible: boolean) {
-        this._image.style.display = visible ? 'inherit' : 'none';
-    }
-
-    get visible() {
-        return this._image.style.display !== 'none'
-    }
-
     public triggerFire(position: Point, direction: Point) {
         this.visible = true;
         this.setBulletPosition(position , direction);
