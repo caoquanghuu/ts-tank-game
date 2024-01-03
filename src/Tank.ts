@@ -7,6 +7,7 @@ export class Tank extends MoveAbleObject {
   private _bullet: Bullet;
   private _isPlayerTank: boolean;
   private _tankStatus: boolean = true; // alive = true, die = false.
+  private _isCollisionWithOtherTanks: boolean = false;
 
   constructor(isPlayer: boolean = false) {
     super(isPlayer ? "tank-1" : "tank-2");
@@ -42,12 +43,20 @@ export class Tank extends MoveAbleObject {
     return this._isPlayerTank;
   }
 
+  get isCollisionWithOtherTanks() {
+    return this._isCollisionWithOtherTanks;
+  }
+
   set isPlayerTank(isPlayer: boolean) {
     this._isPlayerTank = isPlayer;
   }
 
   set tankStatus(status: boolean) {
     this._tankStatus = status;
+  }
+
+  set isCollisionWithOtherTanks(isCollision: boolean) {
+    this._isCollisionWithOtherTanks = isCollision;
   }
 
   private onKeyUp(event: any) {
@@ -73,7 +82,11 @@ export class Tank extends MoveAbleObject {
     this.moveEngine.update(deltaTime);
     this._move(deltaTime);
     this._bullet.update(deltaTime);
+    // tank status
     this.tankStatus;
-    // Update HP
+
+    if (this.isCollisionWithOtherTanks) {
+      this.moveEngine.forceChangeDirection();
+    }
   }
 }
