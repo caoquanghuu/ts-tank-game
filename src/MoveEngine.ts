@@ -4,8 +4,7 @@ import { getRandomArbitrary } from "./util";
 export class MoveEngine {
   private _isRandomMove: boolean = false;
   private _moveDirection: Point = { x: 0, y: 0 };
-  private _directionChangeTime = 1000;
-  private _isCollision: boolean = false;
+  private _directionChangeTime = 2000;
 
   constructor(isUseInput: boolean = false, randomMove: boolean = false) {
     if (isUseInput) {
@@ -27,11 +26,19 @@ export class MoveEngine {
     this._moveDirection.y = direction.y;
   }
 
+  set directionChangeTime(dt: number) {
+    this._directionChangeTime = dt;
+  }
+
+  public forceChangeDirection() {
+    this._directionChangeTime = 0;
+  }
+
   public update(dt: number) {
     if (this._isRandomMove) {
       this._directionChangeTime -= dt;
       if (this._directionChangeTime <= 0) {
-        this._directionChangeTime = 1000;
+        this._directionChangeTime = 2000;
 
         this.randomMove();
       }
@@ -39,63 +46,8 @@ export class MoveEngine {
   }
 
   private randomMove() {
-    if (!this._isCollision) {
-      this._moveDirection.x = Math.round(getRandomArbitrary(-1, 1));
-      this._moveDirection.y = Math.round(getRandomArbitrary(-1, 1));
-    } else {
-      const x: number = this._moveDirection.x;
-      const y: number = this._moveDirection.y;
-      if (x === 1) {
-        switch (y) {
-          case -1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(-1, 0));
-            this._moveDirection.y = Math.round(getRandomArbitrary(0, 1));
-            break;
-          }
-          case 0: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(-1, 0));
-            this._moveDirection.y = Math.round(getRandomArbitrary(-1, 1));
-            break;
-          }
-          case 1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(-1, 0));
-            this._moveDirection.y = Math.round(getRandomArbitrary(-1, 0));
-            break;
-          }
-        }
-      } else if (x === 0) {
-        switch (y) {
-          case -1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(-1, 1));
-            this._moveDirection.y = Math.round(getRandomArbitrary(0, 1));
-            break;
-          }
-          case 1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(-1, 1));
-            this._moveDirection.y = Math.round(getRandomArbitrary(0, -1));
-            break;
-          }
-        }
-      } else if (x === -1) {
-        switch (y) {
-          case -1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(0, 1));
-            this._moveDirection.y = Math.round(getRandomArbitrary(0, 1));
-            break;
-          }
-          case 0: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(0, 1));
-            this._moveDirection.y = Math.round(getRandomArbitrary(-1, 1));
-            break;
-          }
-          case 1: {
-            this._moveDirection.x = Math.round(getRandomArbitrary(0, 1));
-            this._moveDirection.y = Math.round(getRandomArbitrary(-1, 0));
-            break;
-          }
-        }
-      }
-    }
+    this._moveDirection.x = Math.round(getRandomArbitrary(-1, 1));
+    this._moveDirection.y = Math.round(getRandomArbitrary(-1, 1));
   }
 
   private onKeyDown(event: any) {
