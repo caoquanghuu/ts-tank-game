@@ -28,7 +28,7 @@ export class Game {
     // khoi tao doi tuong
     this._player = new Tank(true);
 
-    this.spawnEnemy();
+    setInterval(this.spawnEnemy.bind(this), getRandomArbitrary(10000, 15000));
 
     this._tanks.push(this._player);
   }
@@ -57,33 +57,26 @@ export class Game {
 
   // kiem tra va cham giua cac tank
   private checkCollisionBetweenTanks() {
+    //sao chep mot list tanks
     const cloneTanksList = this._tanks.map((tank) => tank);
     this._tanks.forEach((tank) => {
       const isCollision = cloneTanksList.some((cloneTank) =>
         this.isTanksHaveCollision(cloneTank, tank)
       );
 
-      if (isCollision) {
-        // co va cham giua cac tank
-        console.log("co va cham giua cac tanks");
-      }
-      //   if (isCollision) {
-      //     // co van cham giua cac tank
-      //     console.log("co va cham giua cac tanks");
-      //     tank._moveEngine._isCollision = true;
-      //   } else {
-      //     tank._moveEngine._isCollision = false;
-      //   }
+      tank.isCollisionWithOtherTanks = isCollision;
     });
   }
   // cac tanks co va cham hay khong
   private isTanksHaveCollision(cloneTank: Tank, tank: Tank) {
-    const distance = this.getDistanceOfTwoObject(cloneTank, tank);
-    const r = 70;
-
-    if (distance === 0) {
+    if (cloneTank === tank) {
       return false;
-    } else if (distance <= r) {
+    }
+
+    const distance = this.getDistanceOfTwoObject(cloneTank, tank);
+    const r = 100;
+
+    if (distance <= r) {
       return true;
     }
 
@@ -171,10 +164,6 @@ export class Game {
 
     this._enemies.push(newEne);
     this._tanks.push(newEne);
-
-    setTimeout(() => {
-      this.spawnEnemy();
-    }, 30000);
   }
 
   private updateScore() {
