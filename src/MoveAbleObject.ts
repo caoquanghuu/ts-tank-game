@@ -1,20 +1,92 @@
 import { MoveEngine } from "./MoveEngine";
 import { Point } from "./types";
-import { getRandomArbitrary } from "./util";
 
 export class MoveAbleObject {
-  public _image: HTMLDivElement;
-  public _speed: number = 100;
-  public _position: Point = { x: 0, y: 0 };
-  public _moveEngine: MoveEngine;
+  private _image: HTMLDivElement;
 
-  public lastDirection: Point;
+  private _speed: number;
+
+  private _position: Point = { x: 0, y: 0 };
+
+  private _moveEngine: MoveEngine;
+
+  private _lastDirection: Point;
 
   constructor(id: string) {
     // id -> _image
+    this._speed = 100;
     this._image = document.getElementById(id).cloneNode(true) as HTMLDivElement;
     document.getElementById("game-container").appendChild(this._image);
     this._image.style.position = "absolute";
+  }
+
+  get image() {
+    return this._image;
+  }
+
+  set speed(speed: number) {
+    this._speed = speed;
+  }
+
+  get position() {
+    return this._position;
+  }
+
+  get moveEngine() {
+    return this._moveEngine;
+  }
+
+  set moveEngine(moveEngine: MoveEngine) {
+    this._moveEngine = moveEngine;
+  }
+
+  get lastDirection() {
+    return this._lastDirection;
+  }
+
+  set lastDirection(direction: Point) {
+    this._lastDirection = direction;
+  }
+
+  set position(position: Point) {
+    this._position = position;
+    this._image.style.top = `${position.y}px`;
+    this._image.style.left = `${position.x}px`;
+  }
+
+  set visible(visible: boolean) {
+    this._image.style.display = visible ? "inherit" : "none";
+  }
+
+  get visible() {
+    return this._image.style.display !== "none";
+  }
+
+  private rotateDirection(point: Point) {
+    if (point.y === -1) {
+      this._image.style.transform = "rotate(0deg)";
+    }
+    if (point.y === 1) {
+      this._image.style.transform = "rotate(180deg)";
+    }
+    if (point.x === -1) {
+      this._image.style.transform = "rotate(270deg)";
+    }
+    if (point.x === 1) {
+      this._image.style.transform = "rotate(90deg)";
+    }
+    if (point.y === -1 && point.x === -1) {
+      this._image.style.transform = "rotate(-45deg)";
+    }
+    if (point.y === -1 && point.x === 1) {
+      this._image.style.transform = "rotate(45deg)";
+    }
+    if (point.y === 1 && point.x === -1) {
+      this._image.style.transform = "rotate(225deg)";
+    }
+    if (point.y === 1 && point.x === 1) {
+      this._image.style.transform = "rotate(135deg)";
+    }
   }
 
   public _move(deltaTime: number) {
@@ -22,7 +94,7 @@ export class MoveAbleObject {
       return;
     }
 
-    const direction = this._moveEngine.getDirection();
+    const direction = this._moveEngine.direction;
 
     if (direction.x === 0 && direction.y === 0) {
       return;
@@ -56,49 +128,8 @@ export class MoveAbleObject {
       nextPosition.y = 500;
     }
 
-    this.setPosition({ x: nextPosition.x, y: nextPosition.y });
+    this.position = { x: nextPosition.x, y: nextPosition.y };
     this.rotateDirection(direction);
-  }
-
-  public setPosition(position: Point) {
-    this._position = position;
-    this._image.style.top = `${position.y}px`;
-    this._image.style.left = `${position.x}px`;
-  }
-
-  public rotateDirection(point: Point) {
-    if (point.y === -1) {
-      this._image.style.transform = "rotate(0deg)";
-    }
-    if (point.y === 1) {
-      this._image.style.transform = "rotate(180deg)";
-    }
-    if (point.x === -1) {
-      this._image.style.transform = "rotate(270deg)";
-    }
-    if (point.x === 1) {
-      this._image.style.transform = "rotate(90deg)";
-    }
-    if (point.y === -1 && point.x === -1) {
-      this._image.style.transform = "rotate(-45deg)";
-    }
-    if (point.y === -1 && point.x === 1) {
-      this._image.style.transform = "rotate(45deg)";
-    }
-    if (point.y === 1 && point.x === -1) {
-      this._image.style.transform = "rotate(225deg)";
-    }
-    if (point.y === 1 && point.x === 1) {
-      this._image.style.transform = "rotate(135deg)";
-    }
-  }
-
-  set visible(visible: boolean) {
-    this._image.style.display = visible ? "inherit" : "none";
-  }
-
-  get visible() {
-    return this._image.style.display !== "none";
   }
 
   public update(dt: number) {

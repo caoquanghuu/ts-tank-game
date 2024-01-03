@@ -1,35 +1,54 @@
 import { MoveEngine } from "./MoveEngine";
-import { Point } from "./types";
 import { Bullet } from "./bullet";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { getRandomArbitrary } from "./util";
 
 export class Tank extends MoveAbleObject {
-  public _bullet: Bullet;
-  public isPlayerTank: boolean;
-  public tankStatus: boolean = true; // alive = true, die = false.
+  private _bullet: Bullet;
+  private _isPlayerTank: boolean;
+  private _tankStatus: boolean = true; // alive = true, die = false.
 
   constructor(isPlayer: boolean = false) {
     super(isPlayer ? "tank-1" : "tank-2");
-    this.isPlayerTank = isPlayer;
+
+    this._isPlayerTank = isPlayer;
+
     if (isPlayer) {
-      this._moveEngine = new MoveEngine(true);
+      this.moveEngine = new MoveEngine(true);
       this._bullet = new Bullet(true);
 
-      document.addEventListener("keydown", this.onKeyDown.bind(this));
       document.addEventListener("keyup", this.onKeyUp.bind(this));
     } else {
-      this._moveEngine = new MoveEngine(false, true);
+      this.moveEngine = new MoveEngine(false, true);
       this._bullet = new Bullet(false);
 
       setInterval(() => {
         this.fireBullet();
       }, getRandomArbitrary(5000, 10000));
     }
+
     this._bullet.visible = false;
   }
 
-  private onKeyDown() {}
+  get bullet() {
+    return this._bullet;
+  }
+
+  get tankStatus() {
+    return this._tankStatus;
+  }
+
+  get isPlayerTank() {
+    return this._isPlayerTank;
+  }
+
+  set isPlayerTank(isPlayer: boolean) {
+    this._isPlayerTank = isPlayer;
+  }
+
+  set tankStatus(status: boolean) {
+    this._tankStatus = status;
+  }
 
   private onKeyUp(event: any) {
     if (event.keyCode === 32) {
@@ -42,7 +61,7 @@ export class Tank extends MoveAbleObject {
     // const direction = this.getLastDirection();
     if (this.tankStatus) {
       const direction = this.lastDirection;
-      this._bullet.triggerFire(this._position, {
+      this._bullet.triggerFire(this.position, {
         x: direction.x,
         y: direction.y,
       });
@@ -51,7 +70,7 @@ export class Tank extends MoveAbleObject {
 
   public update(deltaTime: number) {
     // di chuyen
-    this._moveEngine.update(deltaTime);
+    this.moveEngine.update(deltaTime);
     this._move(deltaTime);
     this._bullet.update(deltaTime);
     this.tankStatus;

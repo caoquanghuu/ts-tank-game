@@ -1,3 +1,4 @@
+import { MoveAbleObject } from "./MoveAbleObject";
 import { Tank } from "./Tank";
 import { Bullet } from "./bullet";
 import { Point } from "./types";
@@ -8,14 +9,16 @@ const FPS = 60;
 export class Game {
   private _tanks: Tank[] = [];
 
-  public _player: Tank;
+  private _player: Tank;
 
   private _enemies: Tank[] = [];
 
   private _playerHP: number = 5;
+
   private _playerScore: number = 0;
 
   private _scoreBar = <HTMLDivElement>document.getElementById("current-score");
+
   private _HPBar = <HTMLDivElement>document.getElementById("current-hp");
 
   constructor() {
@@ -30,41 +33,53 @@ export class Game {
     this._tanks.push(this._player);
   }
 
-  update(deltaTime: number) {
+  private update(deltaTime: number) {
     // Moi frame, update se dc goi 1 lan. => 60 lan 1s
     // delta time la thoi gian moi frame
 
     this._tanks.forEach((tank) => tank.update(deltaTime));
 
-    this.checkCollision();
-    this.checkCollisionOfTanks();
+    this.checkCollisionBetweenTanksAndBullets();
+    this.checkCollisionBetweenTanks();
   }
 
-  checkCollisionOfTanks() {
-    const cloneTanks = this._tanks.map((tank) => tank);
-    this._tanks.forEach((tank) => {
-      const isCollision = cloneTanks.some((cloneTank) =>
-        this.checkTanksPosition(cloneTank, tank)
-      );
-      if (isCollision) {
-        // co van cham giua cac tank
-        console.log("co va cham giua cac tanks");
-        tank._moveEngine._isCollision = true;
-      } else {
-        tank._moveEngine._isCollision = false;
-      }
-    });
-  }
-
-  checkTanksPosition(cloneTank: Tank, tank: Tank) {
-    const pos1 = cloneTank._position;
-    const pos2 = tank._position;
-
-    const r = 100;
-
+  private getDistanceOfTwoObject(
+    object1: MoveAbleObject,
+    object2: MoveAbleObject
+  ) {
+    const pos1 = object1.position;
+    const pos2 = object2.position;
     const distance = Math.sqrt(
       Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)
     );
+    return distance;
+  }
+
+  // kiem tra va cham giua cac tank
+  private checkCollisionBetweenTanks() {
+    const cloneTanksList = this._tanks.map((tank) => tank);
+    this._tanks.forEach((tank) => {
+      const isCollision = cloneTanksList.some((cloneTank) =>
+        this.isTanksHaveCollision(cloneTank, tank)
+      );
+
+      if (isCollision) {
+        // co va cham giua cac tank
+        console.log("co va cham giua cac tanks");
+      }
+      //   if (isCollision) {
+      //     // co van cham giua cac tank
+      //     console.log("co va cham giua cac tanks");
+      //     tank._moveEngine._isCollision = true;
+      //   } else {
+      //     tank._moveEngine._isCollision = false;
+      //   }
+    });
+  }
+  // cac tanks co va cham hay khong
+  private isTanksHaveCollision(cloneTank: Tank, tank: Tank) {
+    const distance = this.getDistanceOfTwoObject(cloneTank, tank);
+    const r = 70;
 
     if (distance === 0) {
       return false;
@@ -75,27 +90,23 @@ export class Game {
     return false;
   }
 
-  checkCollision() {
-    const bullets = this._tanks.map((tank) => tank._bullet);
+  // kiem tra va cham giua tanks va bullets
+  private checkCollisionBetweenTanksAndBullets() {
+    const bullets = this._tanks.map((tank) => tank.bullet);
     this._tanks.forEach((tank) => {
       // tank._position
       const isCollision = bullets.some((bullet) =>
-        this.ktraVaCham(bullet, tank)
+        this.isTankAndBulletHaveCollision(bullet, tank)
       );
       if (isCollision) {
-        // tank.die();
-        console.log("co va cham");
         this.tankDie(tank);
       }
     });
   }
 
-  ktraVaCham(bullet: Bullet, tank: Tank) {
-    const pos1 = tank._position;
-    const pos2 = bullet._position;
-    bullet;
-    tank;
-
+  // tank va bullet co va cham hay khong
+  private isTankAndBulletHaveCollision(bullet: Bullet, tank: Tank) {
+    // cac truong hop can loai bo
     // dan ko hien tren man hinh.
     if (!bullet.visible) {
       return false;
@@ -112,10 +123,8 @@ export class Game {
     }
 
     const r = 50;
-    const distance = Math.sqrt(
-      Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)
-    );
-    // console.log(distance);
+    const distance = this.getDistanceOfTwoObject(bullet, tank);
+
     if (distance <= r) {
       bullet.removeBullet();
       return true;
@@ -131,12 +140,12 @@ export class Game {
       this._playerHP -= 1;
       this.updateHP();
     }
-
+    //player tank die
     if (this._playerHP === 0) {
       const p = this._tanks.findIndex((tank) => tank === this._player);
       this._tanks.splice(p, 1);
     }
-
+    // update score and remove AI tank
     if (isEneTankDie) {
       this._playerScore += 1;
       this.updateScore();
@@ -148,17 +157,17 @@ export class Game {
       this._enemies.splice(b, 1);
 
       tankDie.visible = false;
-      tankDie._bullet.visible = false;
+      tankDie.bullet.visible = false;
       tankDie.tankStatus = false;
     }
   }
 
   private spawnEnemy() {
     const newEne = new Tank();
-    newEne.setPosition({
+    newEne.position = {
       x: getRandomArbitrary(1, 499),
       y: getRandomArbitrary(1, 499),
-    });
+    };
 
     this._enemies.push(newEne);
     this._tanks.push(newEne);
