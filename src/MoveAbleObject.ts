@@ -6,7 +6,7 @@ export class MoveAbleObject {
     public _image: HTMLDivElement;
     public _speed: number = 100;
     public _position: Point = {x: 0, y: 0};
-    protected _moveEngine: MoveEngine;
+    public _moveEngine: MoveEngine;
 
     public lastDirection : Point;
 

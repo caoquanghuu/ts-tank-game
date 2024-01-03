@@ -47,7 +47,8 @@ export class Game {
             if (isCollision) {
                 // co van cham giua cac tank
                 console.log('co va cham giua cac tanks');
-            }
+                tank._moveEngine._isCollision = true;
+            } else {tank._moveEngine._isCollision = false}
         })
     }
 
