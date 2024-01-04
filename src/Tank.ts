@@ -2,6 +2,7 @@ import { MoveEngine } from "./MoveEngine";
 import { Bullet } from "./bullet";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { getRandomArbitrary } from "./util";
+import { Point } from "./types";
 
 export class Tank extends MoveAbleObject {
   private _bullet: Bullet;
@@ -77,6 +78,39 @@ export class Tank extends MoveAbleObject {
     }
   }
 
+  private setNewDirectionForAiTankWhenHaveCollision() {
+    if (!this._isPlayerTank) {
+      if (this.isCollisionWithOtherTanks) {
+        const lastDirection = this.moveEngine.direction;
+        const newDirection: Point = {
+          x: -lastDirection.x,
+          y: -lastDirection.y,
+        };
+        this.moveEngine.direction = newDirection;
+      }
+    }
+  }
+
+  private disableAKeyBoard(keyName: string) {
+    window.addEventListener("keydown", function (event) {
+      if (event.key === keyName) {
+        event.preventDefault();
+        return false;
+      }
+    });
+  }
+
+  private disableKeyDownWhenPlayerTankHaveCollision() {
+    if (this._isPlayerTank) {
+      if (this.isCollisionWithOtherTanks) {
+        if (this.lastDirection.x === 1 && this.lastDirection.y === 1) {
+          this.disableAKeyBoard("ArrowRight");
+          this.disableAKeyBoard("ArrowDown");
+        }
+      }
+    }
+  }
+
   public update(deltaTime: number) {
     // di chuyen
     this.moveEngine.update(deltaTime);
@@ -84,9 +118,7 @@ export class Tank extends MoveAbleObject {
     this._bullet.update(deltaTime);
     // tank status
     this.tankStatus;
-
-    if (this.isCollisionWithOtherTanks) {
-      this.moveEngine.forceChangeDirection();
-    }
+    this.setNewDirectionForAiTankWhenHaveCollision();
+    this.disableKeyDownWhenPlayerTankHaveCollision();
   }
 }

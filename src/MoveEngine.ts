@@ -4,7 +4,7 @@ import { getRandomArbitrary } from "./util";
 export class MoveEngine {
   private _isRandomMove: boolean = false;
   private _moveDirection: Point = { x: 0, y: 0 };
-  private _directionChangeTime = 2000;
+  private _directionChangeTime = 3000;
 
   constructor(isUseInput: boolean = false, randomMove: boolean = false) {
     if (isUseInput) {
@@ -38,7 +38,7 @@ export class MoveEngine {
     if (this._isRandomMove) {
       this._directionChangeTime -= dt;
       if (this._directionChangeTime <= 0) {
-        this._directionChangeTime = 2000;
+        this._directionChangeTime = 3000;
 
         this.randomMove();
       }

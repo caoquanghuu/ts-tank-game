@@ -49,7 +49,7 @@ export class Game {
   ) {
     const pos1 = object1.position;
     const pos2 = object2.position;
-    const distance = Math.sqrt(
+    const distance: number = Math.sqrt(
       Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)
     );
     return distance;
@@ -73,10 +73,10 @@ export class Game {
       return false;
     }
 
-    const distance = this.getDistanceOfTwoObject(cloneTank, tank);
-    const r = 100;
+    const distance = Math.floor(this.getDistanceOfTwoObject(cloneTank, tank));
+    const r: number = 100;
 
-    if (distance <= r) {
+    if (distance === r) {
       return true;
     }
 
