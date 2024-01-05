@@ -57,14 +57,30 @@ export class MoveAbleObject {
     this.lastDirection = direction;
     const nextPosition = { x: this._imageObject.position.x, y: this._imageObject.position.y };
 
-    let nextX = 0;
-    let nextY = 0;
+    let nextX;
+    let nextY;
 
-    if (direction === Direction.UP || direction === Direction.DOWN) {
-      nextY = (this._imageObject.position.y) + ((this._speed * deltaTime) / 1000) * direction;
-    } else if (direction === Direction.LEFT || direction === Direction.RIGHT) {
-      nextX = (this._imageObject.position.x) + ((this._speed * deltaTime) / 1000) * direction;
+    switch (direction) {
+      case Direction.UP:
+        nextY = (this._imageObject.position.y) - ((this._speed * deltaTime) / 1000);
+        nextX = this._imageObject.position.x;
+        break;
+      case Direction.DOWN:
+        nextY = (this._imageObject.position.y) + ((this._speed * deltaTime) / 1000);
+        nextX = this._imageObject.position.x;
+        break;
+      case Direction.LEFT:
+        nextY = this._imageObject.position.y;
+        nextX = (this._imageObject.position.x) - ((this._speed * deltaTime) / 1000);
+        break;
+      case Direction.RIGHT:
+        nextY = this._imageObject.position.y;
+        nextX = (this._imageObject.position.x) + ((this._speed * deltaTime) / 1000);
+        break;
+      default:
+        break;
     }
+
     nextPosition.x = nextX;
     nextPosition.y = nextY;
 
