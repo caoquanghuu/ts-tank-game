@@ -1,5 +1,5 @@
 import { Direction, Point } from "./types";
-import { getRandomArbitrary, randomEnumValue } from "./util";
+import { getRandomArbitrary, randomEnumKey } from "./util";
 
 export class MoveEngine {
   private _isRandomMove: boolean = false;
@@ -62,12 +62,10 @@ export class MoveEngine {
 
 
   private randomMove() { 
-    this._moveDirection = randomEnumValue(Direction);
+    this.direction = randomEnumKey(Direction);
   }
 
   private onKeyDown(event: any) {
-    this._moveDirection.y = 0;
-    this._moveDirection.x = 0;
     switch (event.keyCode) {
       case 38:
         // up

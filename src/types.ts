@@ -4,11 +4,11 @@ type Point = {
 };
 
 enum Direction {
-  STAND = 0,
-  UP = -1,
-  DOWN = 1,
-  LEFT = -1,
-  RIGHT = 1,
+  STAND,
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
 }
 
 // number;
