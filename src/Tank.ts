@@ -68,7 +68,6 @@ export class Tank extends MoveAbleObject {
   }
 
   private fireBullet() {
-    // const direction = this.getLastDirection();
     if (this.tankStatus) {
       const direction = this.lastDirection;
       this._bullet.triggerFire(this.imageObject.position, direction);

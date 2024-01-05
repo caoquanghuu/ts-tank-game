@@ -11,7 +11,4 @@ enum Direction {
   RIGHT,
 }
 
-// number;
-// 00001111
-
 export { Point, Direction };

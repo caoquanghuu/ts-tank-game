@@ -3,7 +3,6 @@ import { getRandomArbitrary, randomEnumKey } from "./util";
 
 export class MoveEngine {
   private _isRandomMove: boolean = false;
-  private _moveDirection: Point = {x: 0, y: 0};
   private _directionChangeTime = 3000;
   private _forceDirectionCountdown = 200; // ms
   private _direction: Direction = Direction.UP;
@@ -17,14 +16,6 @@ export class MoveEngine {
       // random control
     }
     this._isRandomMove = randomMove;
-  }
-
-  get moveDirection(): Point {
-    return this._moveDirection;
-  }
-
-  set moveDirection(direction : Point) {
-    this._moveDirection = {x: direction.x , y: direction.y};
   }
 
   get direction(): Direction {
@@ -69,22 +60,18 @@ export class MoveEngine {
     switch (event.keyCode) {
       case 38:
         // up
-        this._moveDirection.y = -1;
         this._direction = Direction.UP;
         break;
       case 40:
         // down
-        this._moveDirection.y = 1;
         this._direction = Direction.DOWN;
         break;
       case 37:
         // left
-        this._moveDirection.x = -1;
         this._direction = Direction.LEFT;
         break;
       case 39:
         // right
-        this._moveDirection.x = 1;
         this._direction = Direction.RIGHT;
         break;
 
@@ -94,23 +81,22 @@ export class MoveEngine {
   }
 
   private onKeyUp(event: any) {
-    this._direction = Direction.STAND;
     switch (event.keyCode) {
       case 38:
         // up
-        this._moveDirection.y = 0;
+        this._direction = Direction.STAND;
         break;
       case 40:
         // down
-        this._moveDirection.y = 0;
+        this._direction = Direction.STAND;
         break;
       case 37:
         // up
-        this._moveDirection.x = 0;
+        this._direction = Direction.STAND;
         break;
       case 39:
         // right
-        this._moveDirection.x = 0;
+        this._direction = Direction.STAND;
         break;
 
       default:
