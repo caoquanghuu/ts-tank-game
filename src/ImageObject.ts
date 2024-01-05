@@ -39,7 +39,7 @@ export class ImageObject {
               this._image.style.transform = "rotate(180deg)";
               break;
             case Direction.LEFT:
-              this._image.style.transform = "rotate(135deg)";
+              this._image.style.transform = "rotate(270deg)";
               break;
             case Direction.RIGHT:
               this._image.style.transform = "rotate(90deg)";
