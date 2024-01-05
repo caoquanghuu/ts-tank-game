@@ -10,7 +10,7 @@ export class MoveAbleObject {
 
   private _moveEngine: MoveEngine;
 
-  private _lastDirection: Direction = Direction.UP;
+  private _lastDirection: Direction = Direction.STAND;
 
   constructor(id: string) {
     // id -> _image
@@ -18,6 +18,7 @@ export class MoveAbleObject {
     this._speed = 100;
     this._imageObject.image = document.getElementById(id).cloneNode(true) as HTMLDivElement;
     document.getElementById("game-container").appendChild(this._imageObject.image);
+    this._imageObject.setAbsolutePosition();
   }
 
   set speed(speed: number) {

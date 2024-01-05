@@ -2,7 +2,7 @@ import { Direction, Point } from "./types";
 
 export class ImageObject {
     private _image : HTMLDivElement;
-    private _position : Point = {x: 0, y: 0};
+
 
     get image() {
         return this._image;
@@ -13,22 +13,29 @@ export class ImageObject {
     }
 
     get position() : Point {
-        return {x: this._position.x, y: this._position.y}
+        return {x: parseInt(this.image.style.left), y: parseInt(this.image.style.top)}
     }
 
     set position(position : Point) {
-        this._position = position;
         this._image.style.top = `${position.y}px`;
         this._image.style.left = `${position.x}px`;
+    }
+
+    public setAbsolutePosition() {
+        this._image.style.position = 'absolute';
+    }
+
+    public setImageVisibility() {
+        this._image.style.visibility = 'auto';
     }
 
     set visible(visible: boolean) {
         this._image.style.display = visible ? "inherit" : "none";
     }
     
-    get visible() {
-        return this._image.style.display !== "none";
-    }
+    // get visible() {
+    //     return this._image.style.display !== "none";
+    // }
 
     public rotateImage(direction : Direction) {
         switch (direction) {

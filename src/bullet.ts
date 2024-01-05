@@ -8,7 +8,8 @@ export class Bullet extends MoveAbleObject {
   constructor(isPlayer: boolean) {
     super("tank-bullet");
     this.speed = 200;
-    this.imageObject.visible = false;
+    this.imageObject.setImageVisibility();
+    this.imageObject.visible =false;
     this.moveEngine = new MoveEngine(false, false);
     this.isPlayerBullet = isPlayer;
   }
@@ -24,29 +25,22 @@ export class Bullet extends MoveAbleObject {
   public triggerFire(position: Point, direction: Direction) {
     this.imageObject.visible = true;
     this.setBulletPosition(position, direction);
-    // this.moveEngine.direction = direction;
+    this.moveEngine.direction = direction;
   }
 
   private setBulletPosition(position: Point, direction: Direction) {
     if (direction === Direction.DOWN) {
-      this.imageObject.position.x = position.x + 25;
-      this.imageObject.position.y = position.y + 75;
+      this.imageObject.position = {x : position.x + 25, y : position.y + 75};
     }
     if (direction === Direction.UP) {
-      this.imageObject.position.x = position.x + 25;
-      this.imageObject.position.y = position.y - 25;
+      this.imageObject.position = {x : position.x + 25, y : position.y - 25};
     }
     if (direction === Direction.RIGHT) {
-      this.imageObject.position.x = position.x + 75;
-      this.imageObject.position.y = position.y + 25;
+      this.imageObject.position = {x : position.x + 75, y : position.y + 25};
     }
     if (direction === Direction.LEFT) {
-      this.imageObject.position.x = position.x - 25;
-      this.imageObject.position.y = position.y + 25;
+      this.imageObject.position = {x : position.x - 25, y : position.y + 25};
     }
-
-    // this.imageObject.position.x = `${this.position.x}px`;
-    // this.image.style.top = `${this.position.y}px`;
   }
 
   public removeBullet() {
