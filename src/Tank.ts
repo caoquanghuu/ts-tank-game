@@ -29,7 +29,7 @@ export class Tank extends MoveAbleObject {
       }, getRandomArbitrary(5000, 10000));
     }
 
-    this._bullet.visible = false;
+    // this._bullet.visible = false;
   }
 
   get bullet() {
@@ -71,22 +71,22 @@ export class Tank extends MoveAbleObject {
     // const direction = this.getLastDirection();
     if (this.tankStatus) {
       const direction = this.lastDirection;
-      this._bullet.triggerFire(this.position, {
-        x: direction.x,
-        y: direction.y,
-      });
+      this._bullet.triggerFire(this.imageObject.position, direction);
+    }
+  }
+
+  public handleTankCollision() {
+    if (this._isPlayerTank) {
+      //
+    } else {
+      this.moveEngine.forceChangeDirection();
     }
   }
 
   private setNewDirectionForAiTankWhenHaveCollision() {
     if (!this._isPlayerTank) {
       if (this.isCollisionWithOtherTanks) {
-        const lastDirection = this.moveEngine.direction;
-        const newDirection: Point = {
-          x: -lastDirection.x,
-          y: -lastDirection.y,
-        };
-        this.moveEngine.direction = newDirection;
+        // this.moveEngine.direction = this.moveEngine.directionVec;
       }
     }
   }
@@ -100,16 +100,6 @@ export class Tank extends MoveAbleObject {
     });
   }
 
-  private disableKeyDownWhenPlayerTankHaveCollision() {
-    if (this._isPlayerTank) {
-      if (this.isCollisionWithOtherTanks) {
-        if (this.lastDirection.x === 1 && this.lastDirection.y === 1) {
-          this.disableAKeyBoard("ArrowRight");
-          this.disableAKeyBoard("ArrowDown");
-        }
-      }
-    }
-  }
 
   public update(deltaTime: number) {
     // di chuyen
@@ -119,6 +109,5 @@ export class Tank extends MoveAbleObject {
     // tank status
     this.tankStatus;
     this.setNewDirectionForAiTankWhenHaveCollision();
-    this.disableKeyDownWhenPlayerTankHaveCollision();
   }
 }

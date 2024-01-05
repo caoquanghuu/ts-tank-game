@@ -1,10 +1,12 @@
-import { Point } from "./types";
-import { getRandomArbitrary } from "./util";
+import { Direction, Point } from "./types";
+import { getRandomArbitrary, randomEnumValue } from "./util";
 
 export class MoveEngine {
   private _isRandomMove: boolean = false;
-  private _moveDirection: Point = { x: 0, y: 0 };
+  private _moveDirection: Point = {x: 0, y: 0};
   private _directionChangeTime = 3000;
+  private _forceDirectionCountdown = 200; // ms
+  private _direction: Direction = Direction.UP;
 
   constructor(isUseInput: boolean = false, randomMove: boolean = false) {
     if (isUseInput) {
@@ -17,13 +19,20 @@ export class MoveEngine {
     this._isRandomMove = randomMove;
   }
 
-  get direction(): Point {
+  get moveDirection(): Point {
     return this._moveDirection;
   }
 
-  set direction(direction: Point) {
-    this._moveDirection.x = direction.x;
-    this._moveDirection.y = direction.y;
+  set moveDirection(direction : Point) {
+    this._moveDirection = {x: direction.x , y: direction.y};
+  }
+
+  get direction(): Direction {
+    return this._direction;
+  }
+
+  set direction(direction : Direction) {
+    this._direction = direction;
   }
 
   set directionChangeTime(dt: number) {
@@ -31,7 +40,10 @@ export class MoveEngine {
   }
 
   public forceChangeDirection() {
-    this._directionChangeTime = 0;
+    if (this._forceDirectionCountdown <= 0) {
+      this._forceDirectionCountdown = 200;
+      this._directionChangeTime = 0;
+    }
   }
 
   public update(dt: number) {
@@ -43,30 +55,39 @@ export class MoveEngine {
         this.randomMove();
       }
     }
+    if (this._forceDirectionCountdown) {
+      this._forceDirectionCountdown -= dt;
+    }
   }
 
-  private randomMove() {
-    this._moveDirection.x = Math.round(getRandomArbitrary(-1, 1));
-    this._moveDirection.y = Math.round(getRandomArbitrary(-1, 1));
+
+  private randomMove() { 
+    this._moveDirection = randomEnumValue(Direction);
   }
 
   private onKeyDown(event: any) {
+    this._moveDirection.y = 0;
+    this._moveDirection.x = 0;
     switch (event.keyCode) {
       case 38:
         // up
         this._moveDirection.y = -1;
+        this._direction = Direction.UP;
         break;
       case 40:
         // down
         this._moveDirection.y = 1;
+        this._direction = Direction.DOWN;
         break;
       case 37:
-        // up
+        // left
         this._moveDirection.x = -1;
+        this._direction = Direction.LEFT;
         break;
       case 39:
         // right
         this._moveDirection.x = 1;
+        this._direction = Direction.RIGHT;
         break;
 
       default:
@@ -75,6 +96,7 @@ export class MoveEngine {
   }
 
   private onKeyUp(event: any) {
+    this._direction = Direction.STAND;
     switch (event.keyCode) {
       case 38:
         // up
