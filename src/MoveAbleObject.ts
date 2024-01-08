@@ -88,9 +88,4 @@ export class MoveAbleObject {
     this._imageObject.position = { x: fixedPosition.x, y: fixedPosition.y };
     this._imageObject.rotateImage(this._moveEngine.direction);
   }
-
-  // public update(dt: number) {
-  //   this._move(dt);
-    
-  // }
 }

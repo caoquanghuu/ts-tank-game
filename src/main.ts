@@ -29,6 +29,7 @@ export class Game {
     this._player = new Tank(true);
 
     // const newEne = new Tank(false);
+    // newEne.imageObject.position = {x: 250, y: 250};
     // this._enemies.push(newEne);
     // this._tanks.push(newEne);
 
@@ -43,8 +44,7 @@ export class Game {
 
     this._tanks.forEach((tank) => tank.update(deltaTime));
 
-    // this.checkCollisionBetweenTanksAndBullets();
-    // this.checkCollisionBetweenTanks();
+    this.checkCollisionBetweenTanksAndBullets();
   }
 
   private getDistanceOfTwoObject(
@@ -55,37 +55,6 @@ export class Game {
     const pos2 = object2.imageObject.position;
     const distance: number = getDistanceOfTwoPosition(pos1, pos2);
     return distance;
-  }
-
-  // kiem tra va cham giua cac tank
-  private checkCollisionBetweenTanks() {
-    //sao chep mot list tanks
-    const cloneTanksList = this._tanks.map((tank) => tank);
-    this._tanks.forEach((tank) => {
-      const isCollision = cloneTanksList.some((cloneTank) =>
-        this.isTanksHaveCollision(cloneTank, tank)
-      );
-
-      if (isCollision) {
-        tank.handleTankCollision();
-      }
-    });
-  }
-
-  // cac tanks co va cham hay khong
-  private isTanksHaveCollision(cloneTank: Tank, tank: Tank) {
-    if (cloneTank === tank) {
-      return false;
-    }
-
-    const distance = Math.floor(this.getDistanceOfTwoObject(cloneTank, tank));
-    const r: number = 100;
-
-    if (distance <= r) {
-      return true;
-    }
-
-    return false;
   }
 
   // kiem tra va cham giua tanks va bullets

@@ -35,6 +35,11 @@ export class ImageObject {
         this._image.style.display = visible ? "inherit" : "none";
     }
 
+    get visible() {
+        return this._image.style.display !== "none";
+      }
+
+
     public rotateImage(direction : Direction) {
         switch (direction) {
             case Direction.UP:
