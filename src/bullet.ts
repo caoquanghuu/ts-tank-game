@@ -48,7 +48,7 @@ export class Bullet extends MoveAbleObject {
   }
 
   public update(dt: number) {
-    super.update(dt);
+    this._move(dt, true);
     if (
       this.imageObject.position?.x < 1 ||
       this.imageObject.position?.x > 499 ||
