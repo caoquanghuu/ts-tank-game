@@ -44,18 +44,19 @@ export class Bullet extends MoveAbleObject {
   }
 
   public removeBullet() {
-    this.imageObject.visible = false;
-  }
-
-  public update(dt: number) {
-    this._move(dt, true);
     if (
       this.imageObject.position?.x < 1 ||
       this.imageObject.position?.x > 499 ||
       this.imageObject.position?.y < 1 ||
       this.imageObject.position?.y > 499
     ) {
-      this.removeBullet();
+      this.imageObject.visible = false;
     }
+   
+  }
+
+  public update(dt: number) {
+    this._move(dt, true);
+    this.removeBullet();
   }
 }
