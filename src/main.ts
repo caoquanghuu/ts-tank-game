@@ -1,8 +1,7 @@
+import { PositionMap } from "./Map";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { Tank } from "./Tank";
-import { Bullet } from "./bullet";
 import { Point } from "./types";
-// import { Bullet } from "./bullet";
 import { getDistanceOfTwoPosition, getRandomArbitrary } from "./util";
 const FPS = 60;
 
@@ -28,20 +27,12 @@ export class Game {
     // khoi tao doi tuong
     this._player = new Tank(true);
 
-    // const newEne = new Tank(false);
-    // newEne.imageObject.position = {x: 250, y: 250};
-    // this._enemies.push(newEne);
-    // this._tanks.push(newEne);
-
     setInterval(this.spawnEnemy.bind(this), 20000);
 
     this._tanks.push(this._player);
   }
 
   private update(deltaTime: number) {
-    // Moi frame, update se dc goi 1 lan. => 60 lan 1s
-    // delta time la thoi gian moi frame
-
     this._tanks.forEach((tank) => tank.update(deltaTime));
 
     this.checkCollisionBetweenTanksAndBullets();
@@ -128,9 +119,25 @@ export class Game {
 
   private spawnEnemy() {
     const newEne = new Tank();
+    let newPosition : Point;
+
+    // random new position which it not same with orther tanks.
+    for (let i = 0; i < 999; i++) {
+      newPosition = {
+        x: getRandomArbitrary(1, 499),
+        y: getRandomArbitrary(1, 499),
+      };
+
+      let isPositionExistOnMap = PositionMap._positions.some(position => {
+        const distance = getDistanceOfTwoPosition(position, newPosition);
+        if(distance <= 70) {return true}
+      })
+
+      if (!isPositionExistOnMap) break;
+    }
     newEne.imageObject.position = {
-      x: getRandomArbitrary(1, 499),
-      y: getRandomArbitrary(1, 499),
+      x: newPosition.x,
+      y: newPosition.y,
     };
 
     this._enemies.push(newEne);
