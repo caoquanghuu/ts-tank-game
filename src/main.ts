@@ -3,7 +3,7 @@ import { Tank } from "./Tank";
 import { Bullet } from "./bullet";
 import { Point } from "./types";
 // import { Bullet } from "./bullet";
-import { getRandomArbitrary } from "./util";
+import { getDistanceOfTwoPosition, getRandomArbitrary } from "./util";
 const FPS = 60;
 
 export class Game {
@@ -28,7 +28,11 @@ export class Game {
     // khoi tao doi tuong
     this._player = new Tank(true);
 
-    setInterval(this.spawnEnemy.bind(this), getRandomArbitrary(10000, 15000));
+    // const newEne = new Tank(false);
+    // this._enemies.push(newEne);
+    // this._tanks.push(newEne);
+
+    setInterval(this.spawnEnemy.bind(this), 20000);
 
     this._tanks.push(this._player);
   }
@@ -39,8 +43,8 @@ export class Game {
 
     this._tanks.forEach((tank) => tank.update(deltaTime));
 
-    this.checkCollisionBetweenTanksAndBullets();
-    this.checkCollisionBetweenTanks();
+    // this.checkCollisionBetweenTanksAndBullets();
+    // this.checkCollisionBetweenTanks();
   }
 
   private getDistanceOfTwoObject(
@@ -49,9 +53,7 @@ export class Game {
   ) {
     const pos1 = object1.imageObject.position;
     const pos2 = object2.imageObject.position;
-    const distance: number = Math.sqrt(
-      Math.pow(pos1.x - pos2.x, 2) + Math.pow(pos1.y - pos2.y, 2)
-    );
+    const distance: number = getDistanceOfTwoPosition(pos1, pos2);
     return distance;
   }
 
