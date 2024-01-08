@@ -45,7 +45,7 @@ export class MoveAbleObject {
     return this._imageObject;
   }
 
-  public _move(deltaTime: number) {
+  public _move(deltaTime: number, isBullet : boolean) {
     if (!this._moveEngine) {
       return;
     }
@@ -56,7 +56,6 @@ export class MoveAbleObject {
     }
 
     this.lastDirection = direction;
-    const nextPosition = { x: this._imageObject.position.x, y: this._imageObject.position.y };
 
     let nextX;
     let nextY;
@@ -82,17 +81,16 @@ export class MoveAbleObject {
         break;
     }
 
-    nextPosition.x = nextX;
-    nextPosition.y = nextY;
+    const nextPosition = {x: nextX, y: nextY};
 
-
-    const fixedPosition = PositionMap.getMoveDistance(this._imageObject.position, nextPosition);
+    const fixedPosition = PositionMap.getMoveDistance(this._imageObject.position, nextPosition, isBullet);
 
     this._imageObject.position = { x: fixedPosition.x, y: fixedPosition.y };
     this._imageObject.rotateImage(this._moveEngine.direction);
   }
 
-  public update(dt: number) {
-    this._move(dt);
-  }
+  // public update(dt: number) {
+  //   this._move(dt);
+    
+  // }
 }

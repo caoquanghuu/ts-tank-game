@@ -3,17 +3,21 @@ import { Bullet } from "./bullet";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { getRandomArbitrary } from "./util";
 import { Point } from "./types";
+import { PositionMap } from "./Map";
 
 export class Tank extends MoveAbleObject {
   private _bullet: Bullet;
   private _isPlayerTank: boolean;
   private _tankStatus: boolean = true; // alive = true, die = false.
   private _isCollisionWithOtherTanks: boolean = false;
+  private _positionMap: PositionMap;
 
   constructor(isPlayer: boolean = false) {
     super(isPlayer ? "tank-1" : "tank-2");
 
     this._isPlayerTank = isPlayer;
+
+    this._positionMap = new PositionMap();
 
     if (isPlayer) {
       this.moveEngine = new MoveEngine(true);
@@ -82,14 +86,6 @@ export class Tank extends MoveAbleObject {
     }
   }
 
-  private setNewDirectionForAiTankWhenHaveCollision() {
-    if (!this._isPlayerTank) {
-      if (this.isCollisionWithOtherTanks) {
-        // this.moveEngine.direction = this.moveEngine.directionVec;
-      }
-    }
-  }
-
   private disableAKeyBoard(keyName: string) {
     window.addEventListener("keydown", function (event) {
       if (event.key === keyName) {
@@ -99,14 +95,17 @@ export class Tank extends MoveAbleObject {
     });
   }
 
-
   public update(deltaTime: number) {
     // di chuyen
     this.moveEngine.update(deltaTime);
-    this._move(deltaTime);
+    this._move(deltaTime, false);
     this._bullet.update(deltaTime);
     // tank status
     this.tankStatus;
-    this.setNewDirectionForAiTankWhenHaveCollision();
+
+    PositionMap.setPositionMap(
+      this.imageObject.position,
+      this._positionMap.keyInStaticArrayPosition
+    );
   }
 }
