@@ -1,14 +1,14 @@
-type Point = {
+interface Point {
   x: number;
   y: number;
-};
+}
 
 enum Direction {
   STAND,
   UP,
   DOWN,
   LEFT,
-  RIGHT,
+  RIGHT
 }
 
-export { Point, Direction };
+export { type Point, Direction };

@@ -1,16 +1,14 @@
 import { MoveEngine } from "./MoveEngine";
 import { Bullet } from "./bullet";
 import { MoveAbleObject } from "./MoveAbleObject";
-import { getRandomArbitrary } from "./util";
-import { Point } from "./types";
 import { PositionMap } from "./Map";
 
 export class Tank extends MoveAbleObject {
-  private _bullet: Bullet;
+  readonly _bullet: Bullet;
   private _isPlayerTank: boolean;
   private _tankStatus: boolean = true; // alive = true, die = false.
   private _isCollisionWithOtherTanks: boolean = false;
-  private _positionMap: PositionMap;
+  readonly _positionMap: PositionMap;
 
   constructor(isPlayer: boolean = false) {
     super(isPlayer ? "tank-1" : "tank-2");
@@ -30,13 +28,11 @@ export class Tank extends MoveAbleObject {
 
       setInterval(() => {
         this.fireBullet();
-      }, getRandomArbitrary(5000, 10000));
+      }, 7000);
     }
-
-    // this._bullet.visible = false;
   }
 
-  get bullet() {
+  get bullet(): Bullet {
     return this._bullet;
   }
 
@@ -76,23 +72,6 @@ export class Tank extends MoveAbleObject {
       const direction = this.lastDirection;
       this._bullet.triggerFire(this.imageObject.position, direction);
     }
-  }
-
-  public handleTankCollision() {
-    if (this._isPlayerTank) {
-      //
-    } else {
-      this.moveEngine.forceChangeDirection();
-    }
-  }
-
-  private disableAKeyBoard(keyName: string) {
-    window.addEventListener("keydown", function (event) {
-      if (event.key === keyName) {
-        event.preventDefault();
-        return false;
-      }
-    });
   }
 
   public update(deltaTime: number) {

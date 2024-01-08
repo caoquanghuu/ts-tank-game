@@ -3,7 +3,7 @@ import { getDistanceOfTwoPosition } from "./util";
 
 class PositionMap {
   // static
-  private static _positions: Point[] = [];
+  public static _positions: Point[] = [];
 
   private static _countPositionOfTanks: number = 0;
 
@@ -30,10 +30,6 @@ class PositionMap {
     nextPosition: Point,
     isBullet: boolean
   ) {
-    // if _positions have some position which too close to nextPosition
-    // so nextPosition ...
-    // if distance < 50 -> can't move
-    // if distance >=50 so nextPosition be this position
 
     if (nextPosition.x < 0) {
       // cham trai
