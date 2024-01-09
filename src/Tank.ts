@@ -2,9 +2,10 @@ import { MoveEngine } from "./MoveEngine";
 import { Bullet } from "./bullet";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { PositionMap } from "./Map";
+import { Point } from "./types";
 
 export class Tank extends MoveAbleObject {
-  readonly _bullet: Bullet;
+  private _bullet: Bullet[] = [];
   private _isPlayerTank: boolean;
   private _tankStatus: boolean = true; // alive = true, die = false.
   private _isCollisionWithOtherTanks: boolean = false;
@@ -19,20 +20,19 @@ export class Tank extends MoveAbleObject {
 
     if (isPlayer) {
       this.moveEngine = new MoveEngine(true);
-      this._bullet = new Bullet(true);
+      // this._bullet = new Bullet(true);
 
       document.addEventListener("keyup", this.onKeyUp.bind(this));
     } else {
       this.moveEngine = new MoveEngine(false, true);
-      this._bullet = new Bullet(false);
 
       setInterval(() => {
-        this.fireBullet();
+        this.fireBullet(false);
       }, 7000);
     }
   }
 
-  get bullet(): Bullet {
+  get bullet(): Bullet[] {
     return this._bullet;
   }
 
@@ -63,24 +63,37 @@ export class Tank extends MoveAbleObject {
   private onKeyUp(event: any) {
     if (event.keyCode === 32) {
       // Fire bullet.
-      this.fireBullet();
+      this.fireBullet(true);
     }
   }
 
-  private fireBullet() {
+  private fireBullet(isPlayerBullet : boolean) {
     if (this.tankStatus) {
       const direction = this.lastDirection;
-      this._bullet.triggerFire(this.imageObject.position, direction);
+      const newBullet = new Bullet(isPlayerBullet);
+      newBullet.triggerFire(this.imageObject.position, direction);
+      this._bullet.push(newBullet);
     }
+  }
+
+  private removeBulletOfTank() {
+    const a = this._bullet.findIndex(bullet => bullet.isBulletDie === true);
+    if ( a != -1) {
+      this._bullet.splice(a , 1);
+    }
+    
   }
 
   public update(deltaTime: number) {
     // di chuyen
     this.moveEngine.update(deltaTime);
     this._move(deltaTime, false);
-    this._bullet.update(deltaTime);
+    this._bullet.forEach(bullet => bullet.update(deltaTime));
     // tank status
     this.tankStatus;
+
+    // check bullet
+    this.removeBulletOfTank();
 
     PositionMap.setPositionMap(
       this.imageObject.position,

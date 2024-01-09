@@ -4,6 +4,7 @@ import { Direction, Point } from "./types";
 
 export class Bullet extends MoveAbleObject {
   private _isPlayerBullet: boolean;
+  private _isBulletDie : boolean = false;
 
   constructor(isPlayer: boolean) {
     super("tank-bullet");
@@ -18,8 +19,16 @@ export class Bullet extends MoveAbleObject {
     return this._isPlayerBullet;
   }
 
+  get isBulletDie() {
+    return this._isBulletDie;
+  }
+  
   set isPlayerBullet(isPlayer: boolean) {
     this._isPlayerBullet = isPlayer;
+  }
+
+  set isBulletDie(isBulletDie) {
+    this._isBulletDie = isBulletDie;
   }
 
   public triggerFire(position: Point, direction: Direction) {
@@ -57,6 +66,7 @@ export class Bullet extends MoveAbleObject {
       this.imageObject.position?.y > 499
     ) {
       this.removeBullet();
+      this.isBulletDie = true;
     }
   }
 }
