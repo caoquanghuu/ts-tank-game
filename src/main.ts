@@ -1,6 +1,7 @@
 import { PositionMap } from "./Map";
 import { MoveAbleObject } from "./MoveAbleObject";
 import { Tank } from "./Tank";
+import { Bullet } from "./bullet";
 import { Point } from "./types";
 import { getDistanceOfTwoPosition, getRandomArbitrary } from "./util";
 const FPS = 60;
@@ -50,9 +51,18 @@ export class Game {
 
   // kiem tra va cham giua tanks va bullets
   private checkCollisionBetweenTanksAndBullets() {
-    const bullets = this._tanks
-      .map((tank) => (tank.bullet.imageObject.visible ? tank.bullet : null))
-      .filter((i) => i);
+    // const bullets = this._tanks
+    //   .map((tank) => (tank.bullet.imageObject.visible ? tank.bullet : null))
+    //   .filter((i) => i);
+
+    let bullets : Bullet[] = [];
+    this._tanks.forEach(tank => {
+      tank.bullet.forEach(bullet => {
+        if(bullet.imageObject.visible) {
+          bullets.push(bullet);
+        }
+      })
+    })
 
     this._tanks.forEach((tank) => {
       // tank._position
@@ -105,6 +115,10 @@ export class Game {
       this._playerScore += 1;
       this.updateScore();
 
+      // remove tank die position out of position map
+      let P = PositionMap._positions.findIndex(position => position === tankDie.imageObject.position);
+      PositionMap._positions.splice(P ,1);
+
       const a = this._tanks.findIndex((tank) => tank === tankDie);
       this._tanks.splice(a, 1);
 
@@ -112,7 +126,7 @@ export class Game {
       this._enemies.splice(b, 1);
 
       tankDie.imageObject.visible = false;
-      tankDie.bullet.imageObject.visible = false;
+      tankDie.bullet.forEach(bullet => bullet.imageObject.visible = false)
       tankDie.tankStatus = false;
     }
   }
